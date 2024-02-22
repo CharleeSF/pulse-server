@@ -8,7 +8,7 @@ description: |
 
 grade: stable
 confinement: strict
-base: core20
+base: core22
 compression: lzo
 
 apps:
@@ -32,6 +32,7 @@ apps:
       - network
       - playback
       - record
+      - home
   paplay:
     command-chain: [bin/client-wrapper]
     command: usr/bin/paplay
@@ -108,6 +109,7 @@ parts:
     source-depth: 1
     after: [ alsa-lib ]
     build-packages:
+      - meson
       - check
       - doxygen
       - intltool
@@ -132,7 +134,7 @@ parts:
       - libflac8
       - libglib2.0-0
       - libgomp1
-      - libjson-c4
+      - libjson-c5
       - libltdl7
       - libogg0
       - libsbc1
@@ -146,32 +148,32 @@ parts:
       - libvorbis0a
       - libvorbisenc2
     meson-parameters:
-      - --prefix="/usr"
+      - --prefix=/usr
       - --sysconfdir=/etc
       - --libexec=/usr/lib
       - --libdir=/usr/lib
       - --localstatedir=/var
-      - -Dgstreamer="disabled"
-      - -Dbluez5-gstreamer="disabled"
-      - -Dorc="disabled"
-      - -Dgsettings="disabled"
-      - -Dadrian-aec="false"
-      - -Dgtk="disabled"
-      - -Dhal-compat="false"
-      - -Dwebrtc-aec="disabled"
-      - -Doss-output="disabled"
-      - -Djack="disabled"
-      - -Dx11="disabled"
-      - -Dsystem_user="root"
-      - -Dsystem_group="root"
-      - -Daccess_group="root"
+      - -Dgstreamer=disabled
+      - -Dbluez5-gstreamer=disabled
+      - -Dorc=disabled
+      - -Dgsettings=disabled
+      - -Dadrian-aec=false
+      - -Dgtk=disabled
+      - -Dhal-compat=false
+      - -Dwebrtc-aec=disabled
+      - -Doss-output=disabled
+      - -Djack=disabled
+      - -Dx11=disabled
+      - -Dsystem_user=root
+      - -Dsystem_group=root
+      - -Daccess_group=root
     override-build: |
-      snapcraftctl build
-      VER=$(cd $SNAPCRAFT_PART_SRC; git tag|sed 's/^v//')
-      snapcraftctl set-version $VER
-      mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share/applications
+      craftctl default
+      VER=$(cd $CRAFT_PART_SRC; git tag|sed 's/^v//')
+      craftctl set version=$VER
+      mkdir -p $CRAFT_PART_INSTALL/usr/share/applications
     override-prime: |
-      snapcraftctl prime
+      craftctl default
       find usr/share/doc/ -type f,l ! -name copyright | xargs rm -rf
     prime:
       - -usr/include
