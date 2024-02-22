@@ -58,7 +58,7 @@ plugs:
     interface: audio-record
 
 environment:
-  LD_LIBRARY_PATH: "$SNAP/usr/lib/pulseaudio:$SNAP/usr/lib/alsa-lib"
+  LD_LIBRARY_PATH: "$SNAP/usr/lib:$SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR:$SNAP/usr/lib/pulseaudio:$SNAP/usr/lib/alsa-lib"
   PULSE_RUNTIME_PATH: /var/run/pulse
   PULSE_STATE_PATH: $SNAP_COMMON/state
   ALSA_CONFIG_UCM: $SNAP/usr/share/alsa/ucm2
@@ -147,6 +147,7 @@ parts:
       - libudev1
       - libvorbis0a
       - libvorbisenc2
+      - libpulse0
     meson-parameters:
       - --prefix=/usr
       - --sysconfdir=/etc
